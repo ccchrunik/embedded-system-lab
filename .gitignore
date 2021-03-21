@@ -1,3 +1,5 @@
 */BUILD
 */.mbed
 */mbed-os
+*/wifi-ism43362
+*/BSP_B-L475E-IOT01

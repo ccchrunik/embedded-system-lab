@@ -55,16 +55,16 @@ int main()
     float i;
     while(1)
     {
-        // for(int i = 0; i <= 100; i += 1)
-        // {
-        //     led.write((float) i / 100);
-        //     wait_us(100);
-        // }
-        for(i = 1; i >= 0; i -= 0.01)
+        for(i = 0; i <= 0.99; i += 0.01)
         {
             led.write(i);
             wait_us(100);
         }  
+        // for(i = 1; i >= 0; i -= 0.01)
+        // {
+        //     led.write(i);
+        //     wait_us(100);
+        // }  
     }
 
 }
