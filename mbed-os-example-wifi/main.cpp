@@ -180,7 +180,7 @@ void send_sensor_data(NetworkInterface *net)
         return ;
     }
 
-    a.set_port(30006);
+    a.set_port(30007);
     
     response = socket.connect(a);
 

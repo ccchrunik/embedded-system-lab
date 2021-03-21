@@ -16,7 +16,7 @@ def main():
 
     # HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
     HOST = '192.168.50.252'
-    PORT = 30006       # Port to listen on (non-privileged ports are > 1023)
+    PORT = 30007       # Port to listen on (non-privileged ports are > 1023)
     acce = [[] for _ in range(3)]
     gyro = [[] for _ in range(3)]
     acce_colors = ['r', 'g', 'b']
@@ -50,7 +50,7 @@ def main():
                         # if the count go back to 0 and it once go up to 550 and it's not initalization state
                         # we recycle all of the resources
                         if data_count % 300 < 50 and count_flag and not init_flag:
-                            plt.savefig(f'test-{t}.png')
+                            plt.savefig(f'image/image-{t}.png')
                             fig, axes = plt.subplots(nrows=3, ncols=2, sharex=True,
                                                      sharey=True, figsize=(16, 8))
                             file.close()
@@ -65,7 +65,7 @@ def main():
                             now = datetime.now()
                             t = now.strftime("%d::%m::%Y %H:%M:%S")
                             fig.suptitle(f"Motion (start time: {t})")
-                            file = open(f'data-{t}.txt', 'w+')
+                            file = open(f'data/data-{t}.txt', 'w+')
                             init_flag = False
                             threshold = False
 
@@ -119,13 +119,13 @@ def main():
                     axes[0][1].set_title('Gyro')
                     axes[-1][1].set_xlabel('time')
 
-                    plt.pause(0.0001)
+                    plt.pause(0.01)
                     print(json_data)
 
                 plt.show()
         except KeyboardInterrupt:
             print('Interrupted')
-            plt.savefig(f'test-{t}.png')
+            plt.savefig(f'image/image-{t}.png')
             file.close()
             print(f"error_count = {error_count}")
             try:
