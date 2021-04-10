@@ -418,17 +418,17 @@ private:
 };
 
 int main() {
-    // BLE &ble = BLE::Instance();
-    // events::EventQueue event_queue;
-    // ButtonService demo_service;
+    BLE &ble = BLE::Instance();
+    events::EventQueue event_queue;
+    ButtonService demo_service;
 
-    // /* this process will handle basic ble setup and advertising for us */
-    // GattServerProcess ble_process(event_queue, ble);
+    /* this process will handle basic ble setup and advertising for us */
+    GattServerProcess ble_process(event_queue, ble);
 
-    // /* once it's done it will let us continue with our demo */
-    // ble_process.on_init(callback(&demo_service, &ButtonService::start));
+    /* once it's done it will let us continue with our demo */
+    ble_process.on_init(callback(&demo_service, &ButtonService::start));
 
-    // ble_process.start();
+    ble_process.start();
 
     
 
