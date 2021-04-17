@@ -1,33 +1,39 @@
+#include "PinNames.h"
 #include "ThisThread.h"
 #include "mbed.h"
 #include "mbed_events.h" 
+#include <cstdio>
 
-DigitalOut led1(LED1);
-InterruptIn sw(USER_BUTTON);
-EventQueue queue(32 * EVENTS_EVENT_SIZE); 
-// EventQueue queue(2 * EVENTS_EVENT_SIZE); 
-Thread t;
+DigitalOut led(LED1);
+InterruptIn button(USER_BUTTON);
+Timeout  press_threhold;
+EventQueue *queue = mbed_event_queue();
 
-void rise_handler(void) {
-    // Toggle LED
-    led1 = !led1;
-    osThreadId_t fall_t_id = ThisThread::get_id(); 
-    queue.call(printf, "rise_handler in context %p\n", fall_t_id);
-    // printf("rise_handler in context %p\n", ThisThread::get_id());
+
+void button_release_detecting()
+{
+    button.enable_irq();
 }
 
-void fall_handler(void) {
-    // Toggle LED
-    led1 = !led1;
-    printf("fall_handler in context %p\n", ThisThread::get_id());
+void button_pressed()
+{
+    button.disable_irq();
+    queue->call(printf, "pressed\n");
+    press_threhold.attach(button_release_detecting, 3.0);
+    queue->call(printf, "start timer...\n");
 }
+
+void button_released()
+{
+    led = !led;
+    queue->call(printf, "released\n");
+}
+
 
 int main() {
-    // Start the event queue
-    t.start(callback(&queue, &EventQueue::dispatch_forever)); 
-    printf("Starting in context %p\r\n", ThisThread::get_id()); 
     // The 'rise' handler will execute in IRQ context 
-    sw.rise(rise_handler);
+    button.rise(button_released);
     // The 'fall' handler will execute in the context of thread 't' 
-    sw.fall(queue.event(fall_handler));
+    button.fall(button_pressed);
+    queue->dispatch_forever();
 }
